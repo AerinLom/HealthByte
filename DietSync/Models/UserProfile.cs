@@ -12,17 +12,17 @@ namespace DietSync.Models
         public int UserId { get; set; }
 
         [MaxLength(50)] // Limits the maximum length of Username to 50 characters
-        public string? Username { get; set; }
+        public string Username { get; set; }
 
         [MaxLength(255)] // Limits the maximum length of Password to 255 characters
-        public string? Password { get; set; }
+        public string Password { get; set; }
 
         [MaxLength(100)] // Limits the maximum length of Email to 100 characters
-        public string? Email { get; set; }
+        public string Email { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public DateTime? DateofBirth { get; set; }
         public string? Gender { get; set;}
-
+        public ICollection<Recipe> Recipes { get; set; }
     }
 }

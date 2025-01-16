@@ -13,7 +13,7 @@
         public string OtherNutrients { get; set; }
         public string Instructions { get; set; }
         public DateTime CreatedDate { get; set; }
-
+        public String? Type { get; set; }
         public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
     }
 }

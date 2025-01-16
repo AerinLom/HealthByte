@@ -79,6 +79,48 @@ namespace DietSync.Controllers
             return Ok(recipe);
         }
 
+        [HttpGet("search/{name}")]
+        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipeByName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return BadRequest("Recipe name cannot be empty.");
+            }
+
+            var recipes = await _context.Recipes
+                .Where(r => r.Name.ToLower().Contains(name.ToLower()))
+                .OrderBy(r => r.Type)  // Sort by type
+                .ToListAsync();
+
+            if (recipes == null || recipes.Count == 0)
+            {
+                return NotFound("No recipes found with the given name.");
+            }
+
+            return Ok(recipes);
+        }
+
+        // GET: api/Recipe/type/{type}
+        [HttpGet("type/{type}")]
+        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipesByType(string type)
+        {
+            if (string.IsNullOrWhiteSpace(type))
+            {
+                return BadRequest("Recipe type cannot be empty.");
+            }
+
+            var recipes = await _context.Recipes
+                .Where(r => r.Type.ToLower() == type.ToLower())
+                .ToListAsync();
+
+            if (recipes == null || recipes.Count == 0)
+            {
+                return NotFound("No recipes found for the specified type.");
+            }
+
+            return Ok(recipes);
+        }
+
         // Input model for creating a recipe
         public class RecipeInputModel
         {
