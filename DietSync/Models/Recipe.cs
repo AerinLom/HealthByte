@@ -13,7 +13,8 @@
         public string OtherNutrients { get; set; }
         public string Instructions { get; set; }
         public DateTime CreatedDate { get; set; }
-        public String? Type { get; set; }
+        public string? HealthType { get; set; }
+        public string? FoodType { get; set; }
         public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
     }
 }

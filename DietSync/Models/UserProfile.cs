@@ -24,5 +24,6 @@ namespace DietSync.Models
         public DateTime? DateofBirth { get; set; }
         public string? Gender { get; set;}
         public ICollection<Recipe> Recipes { get; set; }
+
     }
 }

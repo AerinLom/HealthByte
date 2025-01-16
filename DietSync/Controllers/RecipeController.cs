@@ -89,7 +89,7 @@ namespace DietSync.Controllers
 
             var recipes = await _context.Recipes
                 .Where(r => r.Name.ToLower().Contains(name.ToLower()))
-                .OrderBy(r => r.Type)  // Sort by type
+                .OrderBy(r => r.FoodType)  // Sort by type
                 .ToListAsync();
 
             if (recipes == null || recipes.Count == 0)
@@ -101,16 +101,36 @@ namespace DietSync.Controllers
         }
 
         // GET: api/Recipe/type/{type}
-        [HttpGet("type/{type}")]
-        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipesByType(string type)
+        [HttpGet("type/{foodtype}")]
+        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipesByFoodType(string foodtype)
         {
-            if (string.IsNullOrWhiteSpace(type))
+            if (string.IsNullOrWhiteSpace(foodtype))
             {
                 return BadRequest("Recipe type cannot be empty.");
             }
 
             var recipes = await _context.Recipes
-                .Where(r => r.Type.ToLower() == type.ToLower())
+                .Where(r => r.FoodType.ToLower() == foodtype.ToLower())
+                .ToListAsync();
+
+            if (recipes == null || recipes.Count == 0)
+            {
+                return NotFound("No recipes found for the specified type.");
+            }
+
+            return Ok(recipes);
+        }
+
+        [HttpGet("type/{healthtype}")]
+        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipesByHealthType(string healthtype)
+        {
+            if (string.IsNullOrWhiteSpace(healthtype))
+            {
+                return BadRequest("Recipe type cannot be empty.");
+            }
+
+            var recipes = await _context.Recipes
+                .Where(r => r.HealthType.ToLower() == healthtype.ToLower())
                 .ToListAsync();
 
             if (recipes == null || recipes.Count == 0)
