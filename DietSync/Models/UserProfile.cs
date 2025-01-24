@@ -23,6 +23,9 @@ namespace DietSync.Models
         public string? LastName { get; set; }
         public DateTime? DateofBirth { get; set; }
         public string? Gender { get; set;}
+        public int? Weight { get; set; }
+        public int? Height { get; set; }
+        public string? Membership { get; set; }
         public ICollection<Recipe> Recipes { get; set; }
 
     }
