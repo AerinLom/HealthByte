@@ -20,30 +20,41 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 110vh;
-    background: rgba(39, 39, 39, 0.4);
+    background: white;
+}
+
+.nav-logo img {
+    display: block;
+    position: relative;
+    top: 0px; /* Lower the logo slightly */
+    margin: 0 auto; /* Centers the logo horizontally */
 }
 
 .nav {
     position: fixed;
     top: 0;
     display: flex;
-    justify-content: space-around;
+    justify-content: center; /* Centers items horizontally in the flex container */
+    align-items: center; /* Centers items vertically */
     width: 100%;
     height: 100px;
     line-height: 100px;
-    background-color: white;
+    background: linear-gradient(to bottom, #006400, #e6ffe6);
     z-index: 100;
-}
-
-.nav-logo img {
-    width: 205px; /* Adjust the size as needed */
-    height: auto;
 }
 
 .nav-logo p {
     color: lightgreen;
     font-size: 25px;
     font-weight: 600;
+}
+
+.logobox {
+    justify-content: center;
+    position: absolute;
+    display: flex;
+    background-color: white;
+    top: 0px;
 }
 
 .nav-menu ul {
@@ -63,7 +74,7 @@ body {
         }
 
 .link:hover, .active {
-    border-bottom: 2px solid green; /* Change hover underline color to gold */
+    border-bottom: 2px solid green; /* Change hover underline color to green */
 }
 
 .nav-button .btn {
@@ -75,6 +86,13 @@ body {
     border-radius: 30px;
     cursor: pointer;
     transition: .3s ease;
+    outline: none;
+    box-shadow: none;
+}
+
+.nav-button:focus {
+    outline: none;
+    box-shadow: none;
 }
 
 .btn:hover {
@@ -95,9 +113,18 @@ body {
 }
 
     .btn.white-btn:hover {
-        background: green; /* Change to light gold on hover */
+        background: green; /* Change to green on hover */
     }
 
+/* Remove the blue outline/box shadow when the button is focused */
+button:focus, .btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+#loginBtn:focus, #registerBtn:focus {
+    outline: none;
+    box-shadow: none;
 }
 
 .nav-menu-btn {
@@ -131,10 +158,11 @@ body {
     display: flex;
     flex-direction: column;
     transition: .5s ease-in-out;
+    margin-top: 35px;
 }
 
 .top span {
-    color: white; /* Change text color to gold */
+    color: black; /* Change text color to green */
     font-size: small;
     padding: 10px 0;
     display: flex;
@@ -143,12 +171,12 @@ body {
 
     .top span a {
         font-weight: 500;
-        color: white; /* Change link text color to gold */
+        color: lightgreen; /* Change link text color to green */
         margin-left: 5px;
     }
 
 header {
-    color: white; /* Change text color to gold */
+    color: black; /* Change text color to green */
     font-size: 30px;
     text-align: center;
     padding: 10px 0 30px 0;
@@ -161,7 +189,7 @@ header {
 
 .input-field {
     font-size: 15px;
-    background: rgba(255, 255, 255, 0.4);
+    background: green;
     color: black;
     height: 50px;
     width: 100%;
@@ -174,45 +202,43 @@ header {
 
     .input-field:hover,
     .input-field:focus {
-        background: rgba(255, 255, 255, 0.55);
+        background: lightgreen;
     }
 
 ::-webkit-input-placeholder {
-    color: ghostwhite; /* Change placeholder text color to gold */
+    color: ghostwhite; /* Change placeholder text color to ghostwhite */
 }
 
 .input-box i {
     position: relative;
     top: -35px;
     left: 17px;
-    color: greenyellow; /* Change icon color to gold */
+    color: greenyellow; /* Change icon color to yellow */
 }
 
 .submit {
     font-size: 15px;
     font-weight: 500;
-    color: darkolivegreen;
+    color: white;
     height: 45px;
     width: 100%;
     border: none;
     border-radius: 30px;
     outline: none;
-    background: rgba(255, 255, 255, 0.7); /* Change background color to goldenrod */
+    background: green; /* Background color set to green */
     cursor: pointer;
     transition: .3s ease-in-out;
 }
 
-}
-
-.submit:hover {
-    background: lightgoldenrodyellow; /* Change to light gold on hover */
-    box-shadow: 1px 5px 7px 1px rgba(0, 0, 0, 0.2);
-}
+    .submit:hover {
+        background: lightgreen; /* Background color on hover set to light yellow */
+        box-shadow: 1px 5px 7px 1px rgba(0, 0, 0, 0.2);
+    }
 
 .two-col {
     display: flex;
     justify-content: space-between;
-    color: white; /* Change text color to gold */
+    color: white;
     font-size: small;
     margin-top: 10px;
 }
@@ -224,12 +250,12 @@ header {
 
 .two label a {
     text-decoration: none;
-    color: white; /* Change link text color to gold */
+    color: white; /* Change link text color to white */
 }
 
     .two label a:hover {
         text-decoration: underline;
-        color: lightgoldenrodyellow; /* Example: Change link hover color */
+        color: lightgoldenrodyellow; /* Change hover link color */
     }
 
 @media only screen and (max-width: 786px) {
@@ -264,7 +290,7 @@ header {
 
         .nav-menu-btn i {
             font-size: 25px;
-            color: gold; /* Change menu button icon color to gold */
+            color: gold; /* Change icon color to gold */
             padding: 10px;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
@@ -332,3 +358,4 @@ header {
         padding: 15px;
         font-size: 0.9em;
     }
+}
