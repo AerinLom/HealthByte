@@ -1,0 +1,230 @@
+﻿/* background image */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: ghostwhite;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    color: #333;
+}
+
+/* Header styling */
+header {
+    padding: 2px 20px;
+    background-color: #233020;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+/* Sidebar styling */
+.sidebar {
+    height: 100%;
+    width: 0; /* Sidebar is initially closed */
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 60px;
+    z-index: 10;
+    transition: 0.3s;
+}
+
+    .sidebar a {
+        padding: 15px;
+        text-decoration: none;
+        font-size: 18px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+    .sidebar .closebtn {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        font-size: 36px;
+        color: white;
+        cursor: pointer;
+    }
+
+/* Toggle button styling */
+.toggle-sidebar {
+    font-size: 20px;
+    cursor: pointer;
+    color: lawngreen;
+    background-color: grey;
+    border: none;
+    padding: 8px;
+    position: absolute;
+    left: 20px;
+    border-radius: 65px;
+    width: 45px;
+}
+
+    .toggle-sidebar:hover {
+        color: ghostwhite;
+    }
+
+
+/* Main dashboard content */
+.main-content {
+    margin-left: 0; /* Adjust the margin so content doesn't overlap sidebar when closed */
+    padding: 20px;
+}
+
+
+.dashboard-header {
+    font-size: 2rem;
+    color: #fff; /* White text color */
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 3px 3px 5px rgb(0, 0, 0), 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(0, 0, 0); /* Black shadow */
+}
+
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 300px; /* Move cards further down significantly */
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.8); /* Slight transparency */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card h3 {
+        font-size: 1.2rem;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .card p {
+        color: #777;
+        font-size: 1rem;
+    }
+
+    .card button {
+        padding: 8px 20px;
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .card button:hover {
+            background-color: #444;
+        }
+
+.search-bar {
+    width: 60%;
+    padding: 10px;
+    border-radius: 17px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    font-size: 16px;
+    margin-left: 260px;
+    color: lawngreen;
+    background-color: #233020;
+}
+
+    .search-bar::placeholder {
+        color: white;
+    }
+
+
+.button-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows images to wrap to the next row */
+    justify-content: center; /* Center-aligns images */
+    gap: 20px; /* Adds space between buttons */
+    padding: 20px; /* Optional padding around the container */
+}
+
+.image-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0; /* Removes extra padding around the button */
+    width: 120px; /* Set a fixed width for all buttons */
+    height: 120px; /* Set a fixed height for all buttons */
+    display: flex; /* Centers the image within the button */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensures images do not overflow the button */
+    border-radius: 8px; /* Optional: Add rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Optional: Add shadow for a button-like effect */
+    transition: transform 0.2s ease; /* Smooth hover effect */
+}
+
+    .image-button img {
+        width: 100%; /* Make the image fill the button */
+        height: 100%; /* Make the image fill the button */
+        object-fit: cover; /* Ensures the image covers the button area without distortion */
+        border-radius: 8px; /* Ensures the image matches the button's rounded corners */
+    }
+
+    .image-button:hover {
+        transform: scale(1.05); /* Slightly enlarge button on hover */
+    }
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #000; /* Black background */
+    color: #fff; /* White text */
+    text-align: center;
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none; /* Remove underline if it's an <a> tag */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional: adds shadow */
+}
+
+    .btn:hover {
+        background-color: #444; /* Slightly lighter black on hover */
+    }
+
+.dashboard-container {
+    background-color: #006400; /* Dark green */
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Spacing between items */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-item {
+    background-color: #fff; /* White background */
+    padding: 20px;
+    border-radius: 10px;
+    width: 250px; /* Adjust the width as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
