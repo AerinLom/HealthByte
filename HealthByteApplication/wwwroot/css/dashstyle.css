@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: ghostwhite;
+    background-color: whitesmoke;
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
@@ -28,9 +28,9 @@ header {
     height: 100%;
     width: 0; /* Sidebar is initially closed */
     position: fixed;
-    top: 0;
+    top: 80px;
     left: 0;
-    background-color: #111;
+    background-color: #233020;
     overflow-x: hidden;
     padding-top: 60px;
     z-index: 10;
@@ -41,13 +41,13 @@ header {
         padding: 15px;
         text-decoration: none;
         font-size: 18px;
-        color: #818181;
+        color: white;
         display: block;
         transition: 0.3s;
     }
 
         .sidebar a:hover {
-            color: #f1f1f1;
+            color: darkgrey;
         }
 
     .sidebar .closebtn {
@@ -55,7 +55,7 @@ header {
         top: 20px;
         right: 25px;
         font-size: 36px;
-        color: white;
+        color: limegreen;
         cursor: pointer;
     }
 
@@ -64,7 +64,7 @@ header {
     font-size: 20px;
     cursor: pointer;
     color: lawngreen;
-    background-color: grey;
+    background-color: #233020;
     border: none;
     padding: 8px;
     position: absolute;
@@ -141,14 +141,19 @@ header {
             background-color: #444;
         }
 
-.search-bar {
+.search-container {
+    position: relative;
     width: 60%;
+    margin-left: 260px;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    width: 100%;
     padding: 10px;
     border-radius: 17px;
-    border: 1px solid #ccc;
-    margin-bottom: 20px;
+    border: 1px solid #233020;
     font-size: 16px;
-    margin-left: 260px;
     color: lawngreen;
     background-color: #233020;
 }
@@ -156,6 +161,15 @@ header {
     .search-bar::placeholder {
         color: white;
     }
+
+.search-container i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white; /* Adjust the icon color */
+    cursor: pointer; /* Optional: Makes the icon clickable */
+}
 
 
 .button-container {
@@ -211,20 +225,96 @@ header {
         background-color: #444; /* Slightly lighter black on hover */
     }
 
-.dashboard-container {
-    background-color: #006400; /* Dark green */
+.dashboard-wrapper {
+    background-color: #233020; /* Dark green */
     padding: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Spacing between items */
     border-radius: 10px;
+    opacity: 90%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Full-width banner */
+.banner {
+    background-color: #233020;
+    color: lawngreen;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    width: 100%;
+    opacity: 65%;
+    text-align: left;
+}
+
+/* Dashboard grid */
+.dashboard-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 items per row */
+    gap: 20px; /* Spacing between items */
+}
+
+/* Dashboard items */
 .dashboard-item {
-    background-color: #fff; /* White background */
+    background-color: #fff;
     padding: 20px;
-    border-radius: 10px;
-    width: 250px; /* Adjust the width as needed */
+    border-radius: 7px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+
+.h2-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Ensure it takes the full height of the parent */
+    text-align: center;
+    font-size: 1.1rem; /* Adjust size as needed */
+    margin-top: 10px;
+}
+
+.switch-view {
+    display: flex;
+    background-color: #233020; /* Dark green */
+    padding: 10px 20px;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.switch-link {
+    color: #8fbc8f; /* Light green */
+    text-decoration: none;
+    margin-right: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+    .switch-link:hover,
+    .switch-link.active {
+        color: #ffffff; /* White when active */
+    }
+
+/* Underline effect */
+.underline {
+    position: absolute;
+    bottom: 0;
+    left: 0px;
+    height: 2px;
+    width: 90px; /* Adjust width as needed */
+    background-color: #8fbc8f;
+}
+
+.dash-divider {
+    width: 100%;
+    height: 2px;
+    background-color: ghostwhite; /* Light green */
+    opacity: 50%; /* Adjust transparency */
+    margin-top: -1px;
 }

@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopSmart Dashboard</title>
+    <title>HealthByte Dashboard</title>
 
     <!-- Importing Montserrat font from Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <link href="~/css/dashstyle.css" rel="stylesheet" />
 
@@ -17,9 +18,10 @@
 
     <div id="sidebar" class="sidebar">
         <span class="closebtn" onclick="closeSidebar()">×</span>
-        <a href="@Url.Action("GroceryList", "Home")">Create List</a>
-        <a href="#">Saved Lists</a>
-        <a href="#">Popular Products</a>
+        <a href="@Url.Action("Dashboard", "Home")">Dashboard</a>
+        <a href="#">Saved Meal Plans</a>
+        <a href="#">Recipes</a>
+        <a href="#">Shopping Lists</a>
     </div>
 
 
@@ -27,22 +29,40 @@
 
     <div class="main-content">
         <button class="toggle-sidebar" onclick="openSidebar()">☰</button>
-        <form asp-controller="Product" asp-action="SearchProducts" method="get" class="search-form">
-            <input id="searchInput" type="text" name="Name" placeholder="Search Meals..." required class="search-bar">
+        <form asp-controller="Product" asp-action="SearchProducts" method="get" class="search-form" style="position: relative;">
+            <div class="search-container">
+                <input id="searchInput" type="text" name="Name" placeholder="Search Meals..." required class="search-bar">
+                <i class="fas fa-search"></i>
+            </div>
         </form>
 
-        <div class="dashboard-container">
-            <div class="dashboard-item">
-                <!-- Content for the first white container -->
-                <h2>Dashboard Item 1</h2>
-                <p>Details about item 1...</p>
+
+        <div class="dashboard-wrapper">
+            <div class="banner">Welcome back, User!</div>
+
+            <div class="dashboard-container">
+                <div class="dashboard-item">
+                    <h2 class="h2-centered">Log Meal</h2>
+                </div>
+
+                <div class="dashboard-item">
+                    <h2 class="h2-centered">View Meal History</h2>
+                </div>
+
+                <div class="dashboard-item">
+                    <h2 class="h2-centered">Track Exercise</h2>
+                </div>
+                
+                <div class="switch-view">
+                    <a href="#" class="switch-link active">Overview</a>
+                    <a href="#" class="switch-link">Meal History</a>
+                    <div class="underline"></div>
+                </div>
+               
             </div>
-            <div class="dashboard-item">
-                <!-- Content for the second white container -->
-                <h2>Dashboard Item 2</h2>
-                <p>Details about item 2...</p>
-            </div>
+            <div class="dash-divider"></div>
         </div>
+
     </div>
 
     <script src="~/js/dashboardscripts.js"> </script>
