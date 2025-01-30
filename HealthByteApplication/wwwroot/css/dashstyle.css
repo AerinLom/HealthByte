@@ -473,3 +473,31 @@ header {
     background: #76c893;
     border-radius: 5px;
 }
+
+.myRecipeButton {
+    font-size: 17px;
+    font-weight: 500;
+    color: black;
+    height: 40px;
+    width: 16%;
+    border: none;
+    border-radius: 30px;
+    outline: none;
+    background: lightgrey; /* Background color set to green */
+    cursor: pointer;
+    transition: .3s ease-in-out;
+    margin-bottom: 45px;
+    
+}
+    .myRecipeButton:hover {
+        background: linear-gradient(to right, lawngreen, #8bc34a);
+        color: black;
+    }
+
+
+
+.Recipe-button-container{
+display: flex;
+justify-content: center;
+gap: 20px;
+}

@@ -19,6 +19,16 @@
         .active-view {
             display: block;
         }
+
+        .recipeView {
+            display: none;
+        }
+
+        .active-recipeView {
+            display: block;
+        }
+
+
     </style>
 </head>
 
@@ -123,13 +133,33 @@
                 </div>
             </div>
 
-            <!-- Default Overview View -->
+            <!-- Log your meal view -->
             <div id="mealEntry" class="new-wrapper view">
                 <div class="banner">Log Your Meal</div>
+       
                 <form>
-                    <input class="input-field" type="text" placeholder="Meal Name" required>
-                    <input class="input-field" type="number" placeholder="Calories" required>
-                    <button class="submit" type="submit">Log Meal</button>
+                    <div class="Recipe-button-container">
+                    <button class="myRecipeButton" onclick="showView('myRecipe')">My Recipe</button>
+                        <button class="myRecipeButton" onclick="showView('healthByteRecipe')">HealthByte Recipe</button>
+                         
+                        <div id="myRecipe" class="recipeWrapper recipeView" >
+                  
+                        <input class="input-field" type="text" placeholder="Meal Name" required>
+                        <input class="input-field" type="number" placeholder="Calories" required>
+                        <input class="input-field" type="text" placeholder="Ingredients" required>
+                        <button class="submit" type="submit">Log Meal</button>
+                        </div>
+
+                        <div id="healthByteRecipe" class="recipeWrapper recipeView">
+
+                            <input class="input-field" type="text" placeholder="Meal Name" required>
+                            <input class="input-field" type="number" placeholder="Calories" required>
+                            <button class="submit" type="submit">Log Meal</button>
+                        </div>
+
+
+                    </div>
+
                 </form>
             </div>
 
@@ -162,6 +192,27 @@
         // Function to show the selected view and hide others
         function showView(viewId) {
             // Hide all views
+            const views_recipe = document.querySelectorAll('.recipeWrapper');
+            views_recipe.forEach(view => {
+                view.classList.remove('active-recipeView');
+            });
+
+            // Show the selected view
+            const selectedRecipeView = document.getElementById(viewId);
+            if (selectedRecipeView) {
+                selectedRecipeView.classList.add('active-recipeView');
+            }
+        }
+
+        // Optional: Default view (Overview)
+        // When the page loads, the "Overview" section is displayed by default
+        document.getElementById('healthByteRecipe').classList.add('active-recipeView');
+    </script>
+
+    <script>
+        // Function to show the selected view and hide others
+        function showView(viewId) {
+            // Hide all views
             const views = document.querySelectorAll('.new-wrapper');
             views.forEach(view => {
                 view.classList.remove('active-view');
@@ -185,6 +236,8 @@
         // When the page loads, the "Overview" section is displayed by default
         document.getElementById('overview').classList.add('active-view');
     </script>
+
+
 
 </body>
 
