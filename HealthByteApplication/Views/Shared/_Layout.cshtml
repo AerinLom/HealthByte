@@ -10,20 +10,40 @@
 </head>
 <body>
     <header>
-
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
             <div style="display: flex; align-items: center;">
                 <img style="width: 80px; height: auto;" src="~/images/logo-green.png" alt="Company Logo" />
                 <p style="margin: 0; padding-left: 10px; font-size: 25px;">HealthByte</p>
             </div>
-            <!-- Account image as a clickable asset -->
-            <a href="/account" style="cursor: pointer;">
-                <img src="/images/green-account.jpg" alt="Account" style="width: 60px; height: auto;" />
-            </a>
+
+            <!-- Dropdown Menu -->
+            <div class="dropdown">
+                <a class="dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="/images/green-account.jpg" alt="Account" style="width: 60px; height: auto; cursor: pointer;" />
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
+                    <li>
+                        <a class="dropdown-item" href="~/Views/Home/OldIndex">
+                            <i class="fas fa-user-circle"></i> Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="/settings">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item text-danger" href="@Url.Action("OldIndex", "Home")">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-
-
     </header>
+
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

@@ -20,3 +20,40 @@ html {
 body {
   margin-bottom: 40px;
 }
+
+/* Dropdown background */
+.dropdown-menu {
+    background: #223322; /* Dark green */
+    border-radius: 8px;
+    border: none;
+}
+
+/* Dropdown items */
+.dropdown-item {
+    color: white !important; /* Force white text */
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+}
+
+    /* Icons inside dropdown */
+    .dropdown-item i {
+        margin-right: 10px; /* Space between icon and text */
+    }
+
+    /* Hover effect */
+    .dropdown-item:hover {
+        background: #2e4b2e;
+    }
+
+/* Divider color */
+.dropdown-divider {
+    border-top: 1px solid #3a573a;
+}
+
+/* Logout text color */
+.text-danger {
+    color: #ff6961 !important; /* Red color for logout */
+}
+
+
