@@ -139,25 +139,20 @@
        
                 <form>
                     <div class="Recipe-button-container">
-                    <button class="myRecipeButton" onclick="showView('myRecipe')">My Recipe</button>
-                        <button class="myRecipeButton" onclick="showView('healthByteRecipe')">HealthByte Recipe</button>
-                         
-                        <div id="myRecipe" class="recipeWrapper recipeView" >
-                  
+                        <button class="myRecipeButton" onclick="showRecipeView('myRecipe')">My Recipe</button>
+                        <button class="myRecipeButton" onclick="showRecipeView('healthByteRecipe')">HealthByte Recipe</button>
+                    </div>
+                    <div id="myRecipe" class="recipeWrapper recipeView">
                         <input class="input-field" type="text" placeholder="Meal Name" required>
                         <input class="input-field" type="number" placeholder="Calories" required>
                         <input class="input-field" type="text" placeholder="Ingredients" required>
                         <button class="submit" type="submit">Log Meal</button>
-                        </div>
+                    </div>
 
-                        <div id="healthByteRecipe" class="recipeWrapper recipeView">
-                            <input class="input-field" type="text" placeholder="Meal Name" required>
-                            <input class="input-field" type="text" placeholder="Meal Name" required>
-                            <input class="input-field" type="number" placeholder="Calories" required>
-                            <button class="submit" type="submit">Log Meal</button>
-                        </div>
-
-
+                    <div id="healthByteRecipe" class="recipeWrapper recipeView">
+                        <input class="input-field" type="text" placeholder="Meal Name" required>
+                        <input class="input-field" type="number" placeholder="Calories" required>
+                        <button class="submit" type="submit">Log Meal</button>
                     </div>
 
                 </form>
@@ -190,7 +185,7 @@
 
     <script>
         // Function to show the selected view and hide others
-        function showView(viewId) {
+        function showRecipeView(viewId) {
             // Hide all views
             const views_recipe = document.querySelectorAll('.recipeWrapper');
             views_recipe.forEach(view => {

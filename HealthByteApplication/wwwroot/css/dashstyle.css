@@ -486,7 +486,7 @@ header {
     background: lightgrey; /* Background color set to green */
     cursor: pointer;
     transition: .3s ease-in-out;
-    margin-bottom: 45px;
+    margin-bottom: 1px;
     
 }
     .myRecipeButton:hover {
@@ -494,10 +494,20 @@ header {
         color: black;
     }
 
-
-
 .Recipe-button-container{
 display: flex;
 justify-content: center;
 gap: 20px;
+}
+
+.recipeWrapper {
+    background-color: white; /* Dark green */
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 25px;
+    opacity: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
