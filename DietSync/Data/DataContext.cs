@@ -1,6 +1,5 @@
 ﻿using DietSync.Models;
 using Microsoft.EntityFrameworkCore;
-using DietSync.Models;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 namespace DietSync.Data

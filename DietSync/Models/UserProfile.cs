@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DietSync.Models
 {
-    [Table("userProfile")] // Maps this class to the "userProfile" table in the database
+    [Table("HealthByteUser")] // Maps this class to the "userProfile" table in the database
     public class UserProfile
     {
         [Key] // Specifies that UserId is the primary key

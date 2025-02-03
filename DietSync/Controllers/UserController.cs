@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using DietSync.Data;
 using Microsoft.AspNetCore.Identity;
+using HealthByte.Models;
 
 namespace DietSync.Controllers
 {
@@ -94,24 +95,68 @@ namespace DietSync.Controllers
                 var userProfile = new UserProfile
                 {
                     Username = model.Username,
-                    Email = model.Email
-                    // Add other properties as needed
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    DateofBirth = null, // Optional fields not included in signup
+                    Gender = null,
+                    Weight = null,
+                    Height = null,
+                    Membership = "Free" // Default membership level
                 };
 
                 // Hash the password
                 userProfile.Password = _passwordHasher.HashPassword(userProfile, model.Password);
 
-                // Add the new user profile to the database
+                // Save user profile
                 _context.UserProfiles.Add(userProfile);
                 await _context.SaveChangesAsync();
 
-                return Ok();
+                return Ok(new { message = "User created successfully" });
             }
             catch (Exception ex)
             {
                 return StatusCode(500, "An error occurred while saving the user profile.");
             }
         }
+
+        [HttpPost("SignIn")]
+        public async Task<IActionResult> SignIn([FromBody] SignInModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                // Find the user by username or email
+                var user = await _context.UserProfiles
+                    .FirstOrDefaultAsync(u => u.Username == model.UsernameOrEmail || u.Email == model.UsernameOrEmail);
+
+                if (user == null)
+                {
+                    return Unauthorized(new { message = "Invalid username or password." });
+                }
+
+                // Verify the password
+                var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
+
+                if (passwordVerificationResult == PasswordVerificationResult.Failed)
+                {
+                    return Unauthorized(new { message = "Invalid username or password." });
+                }
+
+                // Authentication successful
+                return Ok(new { message = "Login successful", userId = user.UserId, username = user.Username });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred during sign-in.");
+            }
+        }
+
+
 
         // PUT: api/UserProfile/{id}
         [HttpPut("{id}")]
