@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using HealthByteApplication.Models;
 using Microsoft.AspNetCore.Identity;
+using DietSync.Models;
 
 namespace HealthByteApplication.Controllers
 {
@@ -35,7 +36,37 @@ namespace HealthByteApplication.Controllers
             return View();
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> Register(UserProfileInputModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Serialize the UserModel object to JSON
+                    var json = JsonConvert.SerializeObject(model);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    // Send the POST request to the external API
+                    var response = await _httpClient.PostAsync("UserProfile/UserProfile", content);
+
+                    // Check for successful response
+                    response.EnsureSuccessStatusCode(); // Throws on error status
+
+                    // Redirect to the Login action after successful registration
+                    return RedirectToAction("Index", "Home");
+                }
+                catch (HttpRequestException ex)
+                {
+                    // Log or handle the exception (e.g., return error view)
+                    // Consider logging the exception details for debugging purposes.
+                    return View("Error"); // Pass error message to Error view
+                }
+            }
+
+            // Return validation error or bad request
+            return BadRequest(new { success = false, message = "Invalid input" });
+        }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
