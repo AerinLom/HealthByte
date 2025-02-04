@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthByte Dashboard</title>
+
+    <!-- Importing Montserrat font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <link href="~/css/dashstyle.css" rel="stylesheet" />
+
+    <style>
+        .view {
+            display: none;
+        }
+
+        .active-view {
+            display: block;
+        }
+
+        .recipeView {
+            display: none;
+        }
+
+        .active-recipeView {
+            display: block;
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+
+    <div id="sidebar" class="sidebar">
+        <span class="closebtn" onclick="closeSidebar()">×</span>
+        <a href="@Url.Action("Dashboard", "Home")">Dashboard</a>
+        <a href="#">Saved Meal Plans</a>
+        <a href="#">Recipes</a>
+        <a href="#">Shopping Lists</a>
+    </div>
+
+
+
+
+    <div class="main-content">
+        <button class="toggle-sidebar" onclick="openSidebar()">☰</button>
+        <form asp-controller="Product" asp-action="SearchProducts" method="get" class="search-form" style="position: relative;">
+            <div class="search-container">
+                <input id="searchInput" type="text" name="Name" placeholder="Search Meals..." required class="search-bar">
+                <i class="fas fa-search"></i>
+            </div>
+        </form>
+
+
+        <div class="dashboard-wrapper">
+            <div class="banner">Welcome back, User!</div>
+
+            <div class="dashboard-container">
+                <button class="dashboard-item" onclick="showView('mealEntry')">
+                    <i class="fa-solid fa-apple-whole"></i>
+                    <h2 class="h2-centered">Log Meal</h2>
+                </button>
+
+                <button class="dashboard-item" onclick="showView('mealHistory')">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <h2 class="h2-centered">View Meal History</h2>
+                </button>
+
+                <button class="dashboard-item" onclick="showView('trackExercise')">
+                    <i class="fa-solid fa-dumbbell"></i>
+                    <h2 class="h2-centered">Track Exercise</h2>
+                </button>
+                
+                <div class="switch-view">
+                    <a onclick="showView('overview')" class="switch-link active">Overview</a>
+                    
+                    <div class="underline"></div>
+                </div>
+               
+            </div>
+            <div class="dash-divider"></div>
+        </div>
+
+        <div class="dashboard-wrapper">
+            <!-- Default Overview View -->
+            <div id="overview" class="new-wrapper view">
+                <div class="dietary-container">
+                    <h3>Dietary Requirements</h3>
+                    <div class="dietary-tags">
+                        <span class="tag gluten-free">Gluten Free</span>
+                        <span class="tag dairy-free">Dairy Free</span>
+                        <span class="tag low-sugar">Low Sugar</span>
+                    </div>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <i class="fa-solid fa-utensils"></i>
+                        <div class="stat-content">
+                            <h4>Daily Goal</h4>
+                            <p><strong>1,850</strong> kcal</p>
+                            <div class="progress-bar"><div class="progress" style="width: 70%;"></div></div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fa-solid fa-dumbbell"></i>
+                        <div class="stat-content">
+                            <h4>Protein</h4>
+                            <p><strong>82</strong> g</p>
+                            <div class="progress-bar"><div class="progress" style="width: 50%;"></div></div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fa-solid fa-running"></i>
+                        <div class="stat-content">
+                            <h4>Exercise</h4>
+                            <p><strong>45</strong> min</p>
+                            <div class="progress-bar"><div class="progress" style="width: 60%;"></div></div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fa-solid fa-tint"></i>
+                        <div class="stat-content">
+                            <h4>Water</h4>
+                            <p><strong>1.8</strong> L</p>
+                            <div class="progress-bar"><div class="progress" style="width: 75%;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Log your meal view -->
+            <div id="mealEntry" class="new-wrapper view">
+                <div class="banner">Log Your Meal</div>
+       
+                <form>
+                    <div class="Recipe-button-container">
+                        <button class="myRecipeButton" onclick="showRecipeView('myRecipe')">My Recipe</button>
+                        <button class="myRecipeButton" onclick="showRecipeView('healthByteRecipe')">HealthByte Recipe</button>
+                    </div>
+                    <div id="myRecipe" class="recipeWrapper recipeView">
+                        <input class="input-field" type="text" placeholder="Meal Name" required>
+                        <input class="input-field" type="number" placeholder="Calories" required>
+                        <input class="input-field" type="text" placeholder="Ingredients" required>
+                        <button class="submit" type="submit">Log Meal</button>
+                    </div>
+
+                    <div id="healthByteRecipe" class="recipeWrapper recipeView">
+                        <input class="input-field" type="text" placeholder="Meal Name" required>
+                        <input class="input-field" type="number" placeholder="Calories" required>
+                        <button class="submit" type="submit">Log Meal</button>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Meal History View -->
+            <div id="mealHistory" class="new-wrapper view">
+                <div class="banner">Your Meal History</div>
+                <ul>
+                    <li>Meal 1</li>
+                    <li>Meal 2</li>
+                    <li>Meal 3</li>
+                </ul>
+            </div>
+
+            <!-- Track Exercise View -->
+            <div id="trackExercise" class="new-wrapper view">
+                <div class="banner">Track Your Exercise</div>
+                <form>
+                    <input class="input-field" type="text" placeholder="Exercise Name" required>
+                    <input class="input-field" type="number" placeholder="Duration (mins)" required>
+                    <button class="submit" type="submit">Log Exercise</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="~/js/dashboardscripts.js"> </script>
+
+    <script>
+        // Function to show the selected view and hide others
+        function showRecipeView(viewId) {
+            // Hide all views
+            const views_recipe = document.querySelectorAll('.recipeWrapper');
+            views_recipe.forEach(view => {
+                view.classList.remove('active-recipeView');
+            });
+
+            // Show the selected view
+            const selectedRecipeView = document.getElementById(viewId);
+            if (selectedRecipeView) {
+                selectedRecipeView.classList.add('active-recipeView');
+            }
+        }
+
+        // Optional: Default view (Overview)
+        // When the page loads, the "Overview" section is displayed by default
+        document.getElementById('healthByteRecipe').classList.add('active-recipeView');
+    </script>
+
+    <script>
+        // Function to show the selected view and hide others
+        function showView(viewId) {
+            // Hide all views
+            const views = document.querySelectorAll('.new-wrapper');
+            views.forEach(view => {
+                view.classList.remove('active-view');
+            });
+
+            // Show the selected view
+            const selectedView = document.getElementById(viewId);
+            if (selectedView) {
+                selectedView.classList.add('active-view');
+            }
+
+            // Update the active link in the switch view
+            const links = document.querySelectorAll('.switch-link');
+            links.forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[onclick="showView('${viewId}')"]`).classList.add('active');
+        }
+
+        // Optional: Default view (Overview)
+        // When the page loads, the "Overview" section is displayed by default
+        document.getElementById('overview').classList.add('active-view');
+    </script>
+
+
+
+</body>
+
+</html>

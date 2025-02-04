@@ -82,6 +82,32 @@ namespace DietSync.Controllers
             }
         }
 
+        // GET: api/UserProfile/Username/{username}
+        [HttpGet("Login/{email}")]
+        public async Task<ActionResult<UserProfile>> GetUserProfileByEmail(string email)
+        {
+            try
+            {
+                // Retrieve a user profile by username from the database
+                var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(u => u.Email == email);
+
+                if (userProfile == null)
+                {
+                    // Return 404 Not Found if user profile with specified username is not found
+                    return NotFound();
+                }
+
+                // Return the user profile if found
+                return Ok(userProfile);
+            }
+            catch (Exception ex)
+            {
+                // Log and return 500 Internal Server Error for any exceptions
+                // Example: _logger.LogError(ex, $"Error occurred while fetching UserProfile with username {username}");
+                return StatusCode(500, "An error occurred while fetching the user profile.");
+            }
+        }
+
         [HttpPost("UserProfile")]
         public async Task<IActionResult> PostUserProfile([FromBody] UserProfileInputModel model)
         {

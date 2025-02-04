@@ -23,7 +23,7 @@ namespace HealthByteApplication.Controllers
             return View();
         }
 
-        public IActionResult OldIndex()
+        public IActionResult Dashboard()
         {
             return View();
         }
