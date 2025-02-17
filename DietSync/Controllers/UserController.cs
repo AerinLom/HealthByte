@@ -246,6 +246,241 @@ namespace DietSync.Controllers
             return NoContent();
         }
 
+        [HttpPut("Update/{username}")]
+        public async Task<IActionResult> UpdateSettings(string username, [FromBody] UserProfile updatedProfile)
+        {
+            var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(u => u.Username == username);
+            if (userProfile == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            // Update fields
+            userProfile.Username = updatedProfile.Username ?? userProfile.Username;
+            userProfile.DateofBirth = updatedProfile.DateofBirth ?? userProfile.DateofBirth;
+            userProfile.Gender = updatedProfile.Gender ?? userProfile.Gender;
+            userProfile.Weight = updatedProfile.Weight ?? userProfile.Weight;
+            userProfile.Height = updatedProfile.Height ?? userProfile.Height;
+
+            // Save changes
+            await _context.SaveChangesAsync();
+
+            return Ok(userProfile);
+        }
+
+        [HttpPost("LogMetric")]
+        public async Task<IActionResult> LogMetric([FromBody] DailyHealthLog logEntry)
+        {
+            if (logEntry == null || logEntry.UserId <= 0)
+            {
+                return BadRequest("Invalid input: UserId is required.");
+            }
+
+            var today = DateTime.UtcNow.Date;
+            var existingLog = await _context.DailyHealthLogs
+                .FirstOrDefaultAsync(log => log.UserId == logEntry.UserId && log.LogDate == today);
+
+            if (existingLog != null)
+            {
+                // ✅ Accumulate values instead of overwriting
+                if (logEntry.CaloriesConsumed.HasValue)
+                    existingLog.CaloriesConsumed = (existingLog.CaloriesConsumed ?? 0) + logEntry.CaloriesConsumed;
+
+                if (logEntry.WaterIntake.HasValue)
+                    existingLog.WaterIntake = (existingLog.WaterIntake ?? 0) + logEntry.WaterIntake;
+
+                if (logEntry.ProteinIntake.HasValue)
+                    existingLog.ProteinIntake = (existingLog.ProteinIntake ?? 0) + logEntry.ProteinIntake;
+
+                if (logEntry.ExerciseMinutes.HasValue)
+                    existingLog.ExerciseMinutes = (existingLog.ExerciseMinutes ?? 0) + logEntry.ExerciseMinutes;
+
+                if (logEntry.StepsTaken.HasValue)
+                    existingLog.StepsTaken = (existingLog.StepsTaken ?? 0) + logEntry.StepsTaken;
+
+                if (!string.IsNullOrEmpty(logEntry.Notes))
+                    existingLog.Notes = logEntry.Notes;
+
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Daily log updated successfully." });
+            }
+            else
+            {
+                logEntry.LogDate = today;
+                _context.DailyHealthLogs.Add(logEntry);
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "New daily log created successfully." });
+            }
+        }
+
+        [HttpGet("GetDailyWater/{userId}")]
+        public async Task<IActionResult> GetDailyWater(int userId)
+        {
+            var today = DateTime.UtcNow.Date;
+
+            var dailyLog = await _context.DailyHealthLogs
+                .FirstOrDefaultAsync(log => log.UserId == userId && log.LogDate == today);
+
+            if (dailyLog == null)
+            {
+                return NotFound(new { message = "No water intake log found for today." });
+            }
+
+            return Ok(new { waterIntake = dailyLog.WaterIntake });
+        }
+
+        [HttpGet("GetDailyProtein/{userId}")]
+        public async Task<IActionResult> GetDailyProtein(int userId)
+        {
+            var today = DateTime.UtcNow.Date;
+
+            var dailyLog = await _context.DailyHealthLogs
+                .FirstOrDefaultAsync(log => log.UserId == userId && log.LogDate == today);
+
+            if (dailyLog == null)
+            {
+                return NotFound(new { message = "No water intake log found for today." });
+            }
+
+            return Ok(new { proteinIntake = dailyLog.ProteinIntake });
+        }
+
+        [HttpGet("GetDailyExercise/{userId}")]
+        public async Task<IActionResult> GetDailyExercise(int userId)
+        {
+            var today = DateTime.UtcNow.Date;
+
+            var dailyLog = await _context.DailyHealthLogs
+                .FirstOrDefaultAsync(log => log.UserId == userId && log.LogDate == today);
+
+            if (dailyLog == null)
+            {
+                return NotFound(new { message = "No water intake log found for today." });
+            }
+
+            return Ok(new { exerciseMin = dailyLog.ExerciseMinutes });
+        }
+
+
+
+        [HttpGet("GetDailyLogs/{userId}")]
+        public async Task<IActionResult> GetDailyLogs(int userId)
+        {
+            var logs = await _context.DailyHealthLogs
+                .Where(log => log.UserId == userId)
+                .OrderByDescending(log => log.LogDate)
+                .ToListAsync();
+
+            return Ok(logs);
+        }
+
+        [HttpGet("GetDailyLog/{userId}")]
+        public async Task<IActionResult> GetDailyLog(int userId)
+        {
+            if (userId <= 0)
+            {
+                return BadRequest("Invalid user ID.");
+            }
+
+            var today = DateTime.UtcNow.Date;
+            var dailyLog = await _context.DailyHealthLogs
+                .FirstOrDefaultAsync(log => log.UserId == userId && log.LogDate == today);
+
+            if (dailyLog == null)
+            {
+                return NotFound(new { message = "No log found for today." });
+            }
+
+            return Ok(dailyLog);
+        }
+
+        [HttpPost("CreateMeal/{userId}")]
+        public async Task<IActionResult> CreateMeal(int userId, [FromBody] Meal meal)
+        {
+            if (userId <= 0)
+            {
+                return BadRequest("Invalid user ID.");
+            }
+
+            if (meal == null)
+            {
+                return BadRequest("Meal data is required.");
+            }
+
+            // Optionally, validate meal properties (e.g., ensure that MealName, Calories, etc. are provided)
+            if (string.IsNullOrEmpty(meal.MealName) || meal.Calories == null || meal.Protein == null)
+            {
+                return BadRequest("Meal name, calories, and protein are required.");
+            }
+
+            meal.UserId = userId; // Assign the UserId to the meal
+            meal.MealDate = DateTime.UtcNow.Date; // Set today's date for the meal
+
+            // Add the meal to the context
+            _context.Meals.Add(meal);
+
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetMealsForUserToday), new { userId = userId }, meal);
+        }
+
+
+
+        [HttpGet("GetMeals/{userId}")]
+        public async Task<IActionResult> GetMealsForUserToday(int userId)
+        {
+            if (userId <= 0)
+            {
+                return BadRequest("Invalid user ID.");
+            }
+
+            var today = DateTime.UtcNow.Date;
+            var meals = await _context.Meals
+                                      .Where(m => m.UserId == userId && m.MealDate.Date == today)
+                                      .ToListAsync();
+
+            if (meals == null || meals.Count == 0)
+            {
+                return NotFound(new { message = "No meals found for this user today." });
+            }
+
+            return Ok(meals);
+        }
+
+        [HttpGet("GetTotalCalories/{userId}")]
+        public async Task<IActionResult> GetTotalCaloriesForUserToday(int userId)
+        {
+            if (userId <= 0)
+            {
+                return BadRequest("Invalid user ID.");
+            }
+
+            var today = DateTime.UtcNow.Date;
+            var totalCalories = await _context.Meals
+                                               .Where(m => m.UserId == userId && m.MealDate.Date == today)
+                                               .SumAsync(m => m.Calories ?? 0);
+
+            return Ok(new { TotalCalories = totalCalories });
+        }
+
+        [HttpGet("GetTotalProtein/{userId}")]
+        public async Task<IActionResult> GetTotalProteinForUserToday(int userId)
+        {
+            if (userId <= 0)
+            {
+                return BadRequest("Invalid user ID.");
+            }
+
+            var today = DateTime.UtcNow.Date;
+            var totalProtein = await _context.Meals
+                                              .Where(m => m.UserId == userId && m.MealDate.Date == today)
+                                              .SumAsync(m => m.Protein ?? 0);
+
+            return Ok(new { TotalProtein = totalProtein });
+        }
+
+
         // Check if a user profile with specified id exists
         private bool UserProfileExists(int id)
         {

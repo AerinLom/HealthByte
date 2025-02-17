@@ -153,12 +153,17 @@ button:focus, .btn:focus {
 
 .register-container {
     position: absolute;
-    right: -520px;
+    right: -520px; /* Keep it hidden by default */
     width: 500px;
     display: flex;
     flex-direction: column;
     transition: .5s ease-in-out;
-    margin-top: 35px;
+    margin-top: 75px;
+    height: auto; /* Ensure the container can grow to show all content */
+    padding: 20px; /* Add padding for better spacing */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    max-height: 400px; /* Adjust max height to fit within viewport, subtracting space for nav */
+    opacity: 0; /* Start with opacity 0 to make it invisible */
 }
 
 .top span {
@@ -180,6 +185,14 @@ header {
     font-size: 30px;
     text-align: center;
     padding: 10px 0 30px 0;
+}
+.headersignup {
+    color: black; /* Change text color to green */
+    font-size: 30px;
+    text-align: center;
+    padding: 10px 0 30px 0;
+    margin-top: 0px;
+    margin-bottom: -0px;
 }
 
 .two-forms {

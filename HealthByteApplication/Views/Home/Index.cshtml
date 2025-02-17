@@ -35,6 +35,7 @@
         <!----------------------------- Form box ----------------------------------->
         <div class="form-box">
             <!------------------- login form -------------------------->
+            
             <div class="login-container" id="login">
                 <div class="top">
                     <span>Don't have an account? <a href="#" onclick="showRegisterForm()">Sign Up</a></span>
@@ -59,7 +60,7 @@
             <div class="register-container" id="register">
                 <div class="top">
                     <span>Have an account? <a href="#" onclick="showLoginForm()">Login</a></span>
-                    <header>Sign Up</header>
+                    <div class="headersignup">Sign Up</div>
                 </div>
                 <form asp-controller="User" asp-action="Register" method="post" id="registerForm">
                     <div class="input-box">

@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var firstName = Context.Session.GetString("FirstName") ?? "User";
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -57,7 +61,7 @@
 
 
         <div class="dashboard-wrapper">
-            <div class="banner">Welcome back, User!</div>
+            <div class="banner">Welcome back, @firstName!</div>
 
             <div class="dashboard-container">
                 <button class="dashboard-item" onclick="showView('mealEntry')">
@@ -101,33 +105,41 @@
                     <div class="stat-card">
                         <i class="fa-solid fa-utensils"></i>
                         <div class="stat-content">
-                            <h4>Daily Goal</h4>
-                            <p><strong>1,850</strong> kcal</p>
-                            <div class="progress-bar"><div class="progress" style="width: 70%;"></div></div>
+                            <h4>Daily Calories</h4>
+                            <p><strong>@ViewBag.TotalCalories</strong> kcal</p>
+                            <div class="progress-bar">
+                                <div class="progress" id="calories-progress" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fa-solid fa-drumstick-bite"></i>
+                        <div class="stat-content">
+                            <h4>Protein Intake</h4>
+                            <p><strong id="protein-intake">@ViewBag.ProteinIntake</strong> g</p>
+                            <div class="progress-bar">
+                                <div class="progress" id="protein-progress" style="width: 0%;"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="stat-card">
                         <i class="fa-solid fa-dumbbell"></i>
                         <div class="stat-content">
-                            <h4>Protein</h4>
-                            <p><strong>82</strong> g</p>
-                            <div class="progress-bar"><div class="progress" style="width: 50%;"></div></div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fa-solid fa-running"></i>
-                        <div class="stat-content">
-                            <h4>Exercise</h4>
-                            <p><strong>45</strong> min</p>
-                            <div class="progress-bar"><div class="progress" style="width: 60%;"></div></div>
+                            <h4>Daily Exercise</h4>
+                            <p><strong id="total-exercise">@ViewBag.exerciseMin</strong> Min</p>
+                            <div class="progress-bar">
+                                <div class="progress" id="exercise-progress" style="width: 0%;"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="stat-card">
                         <i class="fa-solid fa-tint"></i>
                         <div class="stat-content">
-                            <h4>Water</h4>
-                            <p><strong>1.8</strong> L</p>
-                            <div class="progress-bar"><div class="progress" style="width: 75%;"></div></div>
+                            <h4>Daily Water</h4>
+                            <p><strong id="water-intake">@ViewBag.WaterIntake</strong> L</p>
+                            <div class="progress-bar">
+                                <div class="progress" id="water-progress" style="width: 0%;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -137,17 +149,20 @@
             <div id="mealEntry" class="new-wrapper view">
                 <div class="banner">Log Your Meal</div>
        
-                <form>
+                
                     <div class="Recipe-button-container">
                         <button class="myRecipeButton" onclick="showRecipeView('myRecipe')">My Recipe</button>
                         <button class="myRecipeButton" onclick="showRecipeView('healthByteRecipe')">HealthByte Recipe</button>
                     </div>
+                <form asp-controller="User" asp-action="LogMeal" method="post">
                     <div id="myRecipe" class="recipeWrapper recipeView">
-                        <input class="input-field" type="text" placeholder="Meal Name" required>
-                        <input class="input-field" type="number" placeholder="Calories" required>
-                        <input class="input-field" type="text" placeholder="Ingredients" required>
+                        <input class="input-field" id="mealName" name="MealName" type="text" placeholder="Meal Name" required>
+                        <input class="input-field" id="calories" name="Calories" type="number" placeholder="Calories" required>
+                        <input class="input-field" id="protein" name="Protein" type="number" placeholder="Protein" required>
                         <button class="submit" type="submit">Log Meal</button>
                     </div>
+                </form>
+
 
                     <div id="healthByteRecipe" class="recipeWrapper recipeView">
                         <input class="input-field" type="text" placeholder="Meal Name" required>
@@ -155,25 +170,22 @@
                         <button class="submit" type="submit">Log Meal</button>
                     </div>
 
-                </form>
+                
             </div>
 
             <!-- Meal History View -->
             <div id="mealHistory" class="new-wrapper view">
                 <div class="banner">Your Meal History</div>
-                <ul>
-                    <li>Meal 1</li>
-                    <li>Meal 2</li>
-                    <li>Meal 3</li>
+                <ul class="meal-history-list">
+                    <!-- Meals will be dynamically added here -->
                 </ul>
             </div>
 
             <!-- Track Exercise View -->
             <div id="trackExercise" class="new-wrapper view">
                 <div class="banner">Track Your Exercise</div>
-                <form>
-                    <input class="input-field" type="text" placeholder="Exercise Name" required>
-                    <input class="input-field" type="number" placeholder="Duration (mins)" required>
+                <form asp-controller="User" asp-action="LogWorkout" method="post">
+                    <input class="input-field" type="number" name="workoutMinutes" placeholder="Enter workout time (mins)" required>
                     <button class="submit" type="submit">Log Exercise</button>
                 </form>
             </div>
@@ -232,7 +244,116 @@
         document.getElementById('overview').classList.add('active-view');
     </script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let intakeString = "@ViewBag.WaterIntake"; // e.g., "1,50 L"
 
+            // Remove the 'L' and trim spaces
+            intakeString = intakeString.replace('L', '').trim(); // => "1,50"
+
+            // Replace comma with dot for parseFloat
+            intakeString = intakeString.replace(',', '.'); // => "1.50"
+
+            // Safely parse as a float
+            const waterIntake = parseFloat(intakeString) || 0;
+
+            // If your daily target is 2.5 L:
+            const dailyTarget = 3;
+
+            // Calculate progress and cap at 100%
+            let progress = (waterIntake / dailyTarget) * 100;
+            progress = Math.min(progress, 100);
+
+            // Update the progress bar
+            document.getElementById("water-progress").style.width = progress + "%";
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const proteinIntake = parseFloat("@ViewBag.ProteinIntake");
+            const proteinDailyTarget = 150; // Example target in grams
+            let proteinProgress = (proteinIntake / proteinDailyTarget) * 100;
+            proteinProgress = proteinProgress > 100 ? 100 : proteinProgress;
+            document.getElementById("protein-progress").style.width = proteinProgress + "%";
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const exerciseMin = parseFloat("@ViewBag.ExerciseMin");
+            const exerciseDailyTarget = 90; // Example target in minutes
+            let exerciseProgress = (exerciseMin / exerciseDailyTarget) * 100;
+            exerciseProgress = exerciseProgress > 100 ? 100 : exerciseProgress;
+            document.getElementById("exercise-progress").style.width = exerciseProgress + "%";
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dailyCalories = parseFloat("@ViewBag.TotalCalories");
+            const caloriesDailyTarget = 3000; // Example target in calories
+            let caloriesProgress = (dailyCalories / caloriesDailyTarget) * 100;
+            caloriesProgress = caloriesProgress > 100 ? 100 : caloriesProgress;
+            document.getElementById("calories-progress").style.width = caloriesProgress + "%";
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function fetchMealHistory() {
+                fetch('@Url.Action("MealHistory", "User")')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error, status = ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Meal Data:', data); // Log the received data for debugging
+                        const mealHistoryList = document.querySelector('#mealHistory ul.meal-history-list');
+                        mealHistoryList.innerHTML = ''; // Clear existing content
+
+                        if (data.length === 0) {
+                            mealHistoryList.innerHTML = '<li>No meals recorded yet.</li>';
+                        } else {
+                            data.forEach(meal => {
+                                console.log('Processing meal:', meal); // Log each meal for debugging
+
+                                const li = document.createElement('li');
+
+                                // Create and append meal name
+                                const mealName = document.createElement('span');
+                                mealName.className = 'meal-name';
+                                mealName.textContent = meal.mealName || 'Unknown';
+                                li.appendChild(mealName);
+
+                                // Create and append meal stats
+                                const mealStats = document.createElement('span');
+                                mealStats.className = 'meal-stats';
+                                mealStats.textContent = `${meal.calories || '0'} calories, ${meal.protein || '0'}g protein`;
+                                li.appendChild(mealStats);
+
+                                // Create and append meal date
+                                const mealDate = document.createElement('span');
+                                mealDate.className = 'meal-date';
+                                mealDate.textContent = new Date(meal.mealDate).toLocaleDateString() || 'Invalid Date';
+                                li.appendChild(mealDate);
+
+                                mealHistoryList.appendChild(li);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching meal history:', error);
+                        document.querySelector('#mealHistory ul.meal-history-list').innerHTML = '<li>Error fetching meal history: ' + error.message + '</li>';
+                    });
+            }
+
+            // Call fetchMealHistory when meal history view is shown
+            document.querySelector('.dashboard-item[onclick="showView(\'mealHistory\')"]').addEventListener('click', fetchMealHistory);
+        });
+    </script>
 
 </body>
 

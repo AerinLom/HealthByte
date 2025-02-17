@@ -511,3 +511,40 @@ gap: 20px;
     display: flex;
     justify-content: center;
 }
+
+.meal-history-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .meal-history-list li {
+        background-color: #f9f9f9;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 0.3s ease;
+    }
+
+        .meal-history-list li:hover {
+            background-color: #e6e6e6;
+        }
+
+    .meal-history-list .meal-name {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .meal-history-list .meal-stats {
+        text-align: right;
+        color: #666;
+    }
+
+    .meal-history-list .meal-date {
+        font-size: 0.9em;
+        color: #999;
+    }

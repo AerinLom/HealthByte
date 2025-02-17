@@ -26,6 +26,12 @@ namespace HealthByteApplication.Models
         public int? Weight { get; set; }
         public int? Height { get; set; }
         public string? Membership { get; set; }
+        public decimal? BMI { get; set; } // Auto-calculated
+        public int? DailyCalorieGoal { get; set; }
+        public decimal? DailyWaterGoal { get; set; }
+        public int? DailyExerciseGoal { get; set; }
+        public string ActivityLevel { get; set; } // Sedentary, Active, etc.
+        public string HealthConditions { get; set; }
 
     }
 }
